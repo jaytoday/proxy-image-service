@@ -1,0 +1,34 @@
+{
+  "name": "proxy-image-service",
+  "version": "0.0.1",
+  "description": "A simple Node.js image proxy service",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha --exit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamslevy/proxy-image-service.git"
+  },
+  "keywords": [
+    "proxy",
+    "node"
+  ],
+  "author": "James Levy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jamslevy/proxy-image-service/issues"
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true
+    }
+  },
+  "homepage": "https://github.com/jamslevy/proxy-image-service#readme",
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "mocha": "^6.1.4"
+  },
+  "dependencies": {
+  }
+}
