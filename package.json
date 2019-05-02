@@ -4,12 +4,17 @@
   "description": "A simple Node.js image proxy service",
   "main": "app.js",
   "scripts": {
+    "deploy": "gcloud app deploy",
+    "start": "node app.js",
     "test": "mocha --exit"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jamslevy/proxy-image-service.git"
   },
+  "engines": {
+      "node": ">=8.0.0"
+    },
   "keywords": [
     "proxy",
     "node"
@@ -26,7 +31,6 @@
   },
   "homepage": "https://github.com/jamslevy/proxy-image-service#readme",
   "devDependencies": {
-    "eslint": "^5.16.0",
     "mocha": "^6.1.4"
   },
   "dependencies": {

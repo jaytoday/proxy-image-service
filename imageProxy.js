@@ -16,26 +16,19 @@ const imageProxyHandler = (requestUrl, response) => {
   validationError !== false ? 
   imageProxyUtils.badRequestError(validationError, response) :
     undefined;
-  try {
-    const fetchImage = new Promise((resolve, fail) => { 
-      imageProxyHttp.fetchRemoteImage(imageUrl, resolve, fail);
-    });
-    fetchImage.then(remoteImageResponse => {
-      pipeRemoteImage(remoteImageResponse, response);
-    }, error => {
-      imageProxyUtils.badRequestError(error, response);
-    });
-  }
-  catch(err) {
-      imageProxyUtils.serverError(err);
-  }  
+  const fetchImage = new Promise((resolve, fail) => { 
+    imageProxyHttp.fetchRemoteImage(imageUrl, resolve, fail);
+  });
+  fetchImage.then(remoteImageResponse => {
+    pipeRemoteImage(remoteImageResponse, response);
+  }, error => {
+    imageProxyUtils.badRequestError(error, response);
+  });
 }
 
 const pipeRemoteImage = (remoteImageResponse, response) => {
   response.writeHead(200, remoteImageResponse.headers);
-  remoteImageResponse.pipe(response, {
-    end: true
-  });
+  remoteImageResponse.pipe(response, { end: true });
 }
 
 module.exports = { imageProxyHandler };

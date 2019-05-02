@@ -1,0 +1,15 @@
+# See https://cloud.google.com/appengine/docs/flexible/nodejs/configuring-your-app-with-app-yaml
+# and https://cloud.google.com/appengine/docs/flexible/nodejs/reference/app-yaml for more info
+
+runtime: nodejs
+env: flex
+service: proxy-image-service
+
+# The settings below are to reduce costs during testing and not appropriate for production use.
+# Increase the values for computing resources and use auto scaling when running production workloads.
+
+manual_scaling:
+  instances: 1
+resources:
+  cpu: 1
+  memory_gb: 0.5

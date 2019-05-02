@@ -21,7 +21,7 @@ const validateImageUrl = imageUrl => {
       '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
     return !!pattern.test(str);
   }  
-  if (!isURL(imageUrl.href)) return `Invalid URL: ${imageUrl.href}`;
+  if (!isURL(imageUrl.href)) return `Invalid URL ${imageUrl.href}`;
   if (imageUrl.protocol !== 'http:' && imageUrl.protocol !== 'https:'){
     return `Invalid Protocol: ${imageUrl.protocol}`;
   }
