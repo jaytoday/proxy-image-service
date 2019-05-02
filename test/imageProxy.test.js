@@ -1,6 +1,6 @@
 const assert = require('assert');
 const http = require('http');
-const app = require('../app');
+const app = require('../src/app');
 
 const exampleImageUrl = 'https%3A%2F%2Fs.gravatar.com%2Favatar%2F0fa604b440cb38bd8e1f935114524ff9%3Fsize%3D100%26default%3Dretro';
 const redirectedImageUrl = 'https%3A%2F%2Fproxy.co%2Ffavicon.ico';
