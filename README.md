@@ -43,7 +43,7 @@ The specified `url` value does **not** need to include an image file extension s
 
 ### Installation
 
-This package does not contain any dependencies, so to install it you simply need to use commands `git clone` and `cd proxy-image-service` to enter the project directory.
+This package does not contain any dependencies, so to install it you simply need to use commands `git clone https://github.com/jamslevy/proxy-image-service.git` and `cd proxy-image-service` to enter the project directory.
 
 Run the Node.js server locally with command `npm start`. 
 
