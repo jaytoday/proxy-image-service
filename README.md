@@ -20,7 +20,7 @@ Here are a few examples of the image proxy functionality:
 To use the proxy service, simply specify a URL in the format of `[proxyServerDomain]/image?url=[remoteImageUrl]` as the `src` attribute of an image element:
 
 ```
-<img src="/image?url=[link]" alt="[link]">
+<img src="[proxyServerDomain]/image?url=[link]" alt="[link]">
 ```
 
 ### Header Forwarding
