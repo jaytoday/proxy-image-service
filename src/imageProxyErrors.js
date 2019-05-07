@@ -11,5 +11,10 @@ const serverError = (err, response) => {
     response.end('500 Server Error');
 }
 
+const notFoundError = (requestUrl, response) => {
+    console.error(`Path ${requestUrl.pathname} not found`);
+    response.writeHead(404, { 'Content-Type': 'text/html' });
+    response.end('404 Not Found', 'utf-8');
+}
 
-module.exports = { badRequestError, serverError };
+module.exports = { badRequestError, serverError, notFoundError };

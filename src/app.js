@@ -1,7 +1,7 @@
 const http = require('http');
 const url  = require('url');
 const imageProxy = require('./imageProxy');
-const imageProxyUtils = require('./imageProxyUtils');
+const imageProxyErrors = require('./imageProxyErrors');
 
 const CONFIG = {
     port: process.env.PORT || 3000
@@ -9,6 +9,7 @@ const CONFIG = {
 
 const httpRequestHandler = (request, response) => {
     console.log(`Request received: ${request.url}`);
+    let {serverError, notFoundError} = imageProxyErrors;
     const requestUrl = url.parse(request.url, true);  
     switch (requestUrl.pathname){   
     case '/':
@@ -20,13 +21,11 @@ const httpRequestHandler = (request, response) => {
             imageProxy.imageProxyHandler(requestUrl, response);
         }
         catch(e) {
-            imageProxyUtils.serverError(e, response);
+            serverError(e, response);
         }
         break;    
     default:
-        console.log(`Error: path ${requestUrl.pathname} not found`);
-        response.writeHead(404, { 'Content-Type': 'text/html' });
-        response.end('404 Not Found', 'utf-8');
+        notFoundError(requestUrl, response);
         break;  
     }
 }

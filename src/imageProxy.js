@@ -1,10 +1,10 @@
 const url  = require('url');
-const imageProxyUtils = require('./imageProxyUtils');
+const imageProxyErrors = require('./imageProxyErrors');
 const imageProxyHttp = require('./imageProxyHttp');
 
 const imageProxyHandler = (requestUrl, response) => {
     let imageUrl;
-    let {badRequestError, serverError} = imageProxyUtils;
+    let {badRequestError, serverError} = imageProxyErrors;
     try {
         imageUrl = url.parse(requestUrl.query.url);
         if (!['http:','https:'].includes(imageUrl.protocol)) throw('Unsupported protocol');
@@ -16,15 +16,19 @@ const imageProxyHandler = (requestUrl, response) => {
     const fetchImage = new Promise((resolve, fail) => { 
         try {
             imageProxyHttp.fetchRemoteImage(imageUrl, resolve, fail);
-        } catch(e) {
-            fail(e, serverError);
+        } 
+        catch(e) {
+            serverError(e, response);
+            fail(e);
         }
     });
     fetchImage
         .then(remoteImageResponse => {
             pipeRemoteImage(remoteImageResponse, response);
         })
-        .catch((error, errorType=badRequestError) => errorType(error, response));
+        .catch(error => {
+            if (!response.finished) badRequestError(error, response);
+        });
 }
 
 const pipeRemoteImage = (remoteImageResponse, response) => {
