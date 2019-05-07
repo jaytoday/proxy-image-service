@@ -1,6 +1,7 @@
 const http = require('http');
 const url  = require('url');
 const imageProxy = require('./imageProxy');
+const imageProxyUtils = require('./imageProxyUtils');
 
 const CONFIG = {
     port: process.env.PORT || 3000
@@ -18,10 +19,8 @@ const httpRequestHandler = (request, response) => {
         try {
             imageProxy.imageProxyHandler(requestUrl, response);
         }
-        catch(err) {
-            console.error(err);
-            response.writeHead(500, { 'Content-Type': 'text/html' });
-            response.end('500 Server Error');
+        catch(e) {
+            imageProxyUtils.serverError(e, response);
         }
         break;    
     default:

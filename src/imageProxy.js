@@ -4,25 +4,27 @@ const imageProxyHttp = require('./imageProxyHttp');
 
 const imageProxyHandler = (requestUrl, response) => {
     let imageUrl;
+    let {badRequestError, serverError} = imageProxyUtils;
     try {
         imageUrl = url.parse(requestUrl.query.url);
+        if (!['http:','https:'].includes(imageUrl.protocol)) throw('Unsupported protocol');
     } 
     catch(err) {
-        return imageProxyUtils.badRequestError(`Unable to parse URL: ${requestUrl.query.url}`,
+        return badRequestError(`Unable to parse URL: ${requestUrl.query.url}`,
             response);
     }
-    const validationError = imageProxyUtils.validateImageUrl(imageUrl);
-    validationError !== false ? 
-        imageProxyUtils.badRequestError(validationError, response) :
-        undefined;
     const fetchImage = new Promise((resolve, fail) => { 
-        imageProxyHttp.fetchRemoteImage(imageUrl, resolve, fail);
+        try {
+            imageProxyHttp.fetchRemoteImage(imageUrl, resolve, fail);
+        } catch(e) {
+            fail(e, serverError);
+        }
     });
-    fetchImage.then(remoteImageResponse => {
-        pipeRemoteImage(remoteImageResponse, response);
-    }, error => {
-        imageProxyUtils.badRequestError(error, response);
-    });
+    fetchImage
+        .then(remoteImageResponse => {
+            pipeRemoteImage(remoteImageResponse, response);
+        })
+        .catch((error, errorType=badRequestError) => errorType(error, response));
 }
 
 const pipeRemoteImage = (remoteImageResponse, response) => {

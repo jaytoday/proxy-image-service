@@ -3,13 +3,12 @@ const https = require('https');
 const url  = require('url');
 
 const MAX_REQUESTS = 5;
-let requestsMade = 0;
 
-const fetchRemoteImage = (imageUrl, resolve, fail) => { 
+const fetchRemoteImage = (imageUrl, resolve, fail, requestsMade=0) => { 
     const fetchModule = imageUrl.protocol === 'https:' ? https : http;
     const remoteRequest = fetchModule.get(imageUrl.href, remoteResponse => {
         if ([301,302].includes(remoteResponse.statusCode)) {
-            return makeRecursiveRequest(remoteResponse, resolve, fail);
+            return makeRecursiveRequest(remoteResponse, resolve, fail, requestsMade);
         } else {
             if (remoteResponse.statusCode !== 200) {
                 return fail(`Unsupported remote server status code ${remoteResponse.statusCode}`);
@@ -25,14 +24,15 @@ const fetchRemoteImage = (imageUrl, resolve, fail) => {
     });
 }
 
-const makeRecursiveRequest = (remoteResponse, resolve, fail) => {
+const makeRecursiveRequest = (remoteResponse, resolve, fail, requestsMade) => {
     requestsMade++;
     if (requestsMade >= MAX_REQUESTS) {
         return fail('Too many requests made');
     }
     const redirectUrl = url.parse(remoteResponse.headers.location);
-    console.log(`Response specifies redirect to ${redirectUrl.href}`);
-    return fetchRemoteImage(redirectUrl, resolve, fail);
+    console.log(`Response specifies redirect to ${redirectUrl.href},\
+  ${requestsMade} requests made`);
+    return fetchRemoteImage(redirectUrl, resolve, fail, requestsMade);
 }
 
 module.exports = { fetchRemoteImage };
